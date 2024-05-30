@@ -39,13 +39,12 @@ const page = () => {
         const username = e.target.username.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const isAdmin=e.target.checkbox.checked;
     
         try {
             // Create a new user with email and password
             const userCredential = await createUser(email, password);
             const user = userCredential.user;
-            console.log('user from signup:',user);
-            // Store additional user data in Firestore
             const usersCollectionRef = collection(db, "users");
             await addDoc(usersCollectionRef, {
                 userId: user.uid,
@@ -53,6 +52,7 @@ const page = () => {
                 username: username, // Storing username in Firestore
                 email: email,
                 createdAt: new Date(),
+                isAdmin:isAdmin
             });
     
             console.log("User signed up successfully");
@@ -134,6 +134,14 @@ const page = () => {
                                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline"
                                     required="required"
                                 />
+                            </div>
+                            <div className="mb-4">
+                                <input
+                                type='checkbox'
+                                id="checkbox"
+                                >
+                                </input>
+                                <label className="ml-2 text-sm font-medium text-gray-700 ">Admin</label>
                             </div>
                             <button
                                 type="submit"
