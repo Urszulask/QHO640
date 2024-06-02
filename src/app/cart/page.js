@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import Cart from '../components/Cart';
 import { UserAuth } from "../auth/AuthContext";
-import { collection, getDocs, getDoc, doc, query, where, addDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, query, where, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 export default function ShoppingBasket() {
   const [cartItems, setCartItems] = useState([]);
-  const { user } = UserAuth();
+  const { user,refreshBalance } = UserAuth();
   const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function ShoppingBasket() {
           const orderData = docSnapshot.data();
           const productRef = doc(db, "products", orderData.productId);
           const productDoc = await getDoc(productRef);
-          return { product: { id: productDoc.id, ...productDoc.data() }};
+          return { id: docSnapshot.id, product: { id: productDoc.id, ...productDoc.data() }};
         });
         const orders = await Promise.all(orderPromises);
         setCartItems(orders);
@@ -68,8 +68,42 @@ export default function ShoppingBasket() {
     };
 
     try {
+      const usersQuery = query(collection(db, "users"), where("userId", "==", user.uid));
+      const usersSnapshot = await getDocs(usersQuery);
+
+      const userDoc = usersSnapshot.docs[0];
+      const userData = userDoc.data();
+      const currentBalance = userData.balance;
+
+      if (totalPrice > currentBalance) {
+        alert("Insufficient balance to complete the purchase.");
+        return;
+      }
+
       await addDoc(collection(db, "orders"), orderData);
-      alert("Order placed successfully!")
+
+      const updateProductPromises = cartItems.map(async (item) => {
+        const productRef = doc(db, "products", item.product.id);
+        const productDoc = await getDoc(productRef);
+        const currentQuantity = productDoc.data().quantity;
+        const newQuantity = currentQuantity - quantities[item.product.id];
+        await updateDoc(productRef, { quantity: newQuantity });
+      });
+
+      await Promise.all(updateProductPromises);
+
+      const removeBasketPromises = cartItems.map(async (item) => {
+        const basketItemRef = doc(db, "shoppingBasket", item.id);
+        await deleteDoc(basketItemRef);
+      });
+
+      await Promise.all(removeBasketPromises);
+
+      const newBalance = currentBalance - totalPrice;
+      await updateDoc(userDoc.ref, { balance: newBalance });
+      await refreshBalance(user.uid);
+      alert("Order placed successfully!");
+    
       setCartItems([]);
       setQuantities({});
     } catch (error) {
