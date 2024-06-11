@@ -49,13 +49,15 @@ export default function ShoppingBasket() {
       alert("You must be logged in to place an order.");
       return;
     }
-
+console.log('Cart Items are:',cartItems);
     const orderItems = cartItems.map(item => ({
-      productId: item.product.id,
+      productName: item.product.name,
+      productImage: item.product.imageUrl,
       quantity: quantities[item.product.id],
       price: item.product.price,
     }));
 
+    console.log('Order Items are:',orderItems);
     const totalQuantity = Object.values(quantities).reduce((acc, quantity) => acc + quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.product.price * quantities[item.product.id]), 0);
 
@@ -79,7 +81,7 @@ export default function ShoppingBasket() {
         alert("Insufficient balance to complete the purchase.");
         return;
       }
-
+      console.log('Order Data is:',orderData);
       await addDoc(collection(db, "orders"), orderData);
 
       const updateProductPromises = cartItems.map(async (item) => {

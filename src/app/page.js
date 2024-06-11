@@ -1,6 +1,4 @@
 'use client'
-//import Login from './backup/login';
-//import WelcomePage from './welcomePage';
 import React, { useEffect, useState } from 'react';
 import { where, collection, getDocs, addDoc, query } from "firebase/firestore";
 import { db } from "./firebaseConfig";
@@ -8,7 +6,6 @@ import { UserAuth } from "./auth/AuthContext";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const { user } = UserAuth();
 
   useEffect(() => {
@@ -16,7 +13,7 @@ export default function Home() {
       const querySnapshot = await getDocs(collection(db, "products"));
       const productsArray = [];
       querySnapshot.forEach((doc) => {
-        productsArray.push({ id: doc.id, ...doc.data() });
+        productsArray.push({ id: doc.id, ...doc.data(), loading: false });
       });
       setProducts(productsArray);
     };
@@ -24,13 +21,25 @@ export default function Home() {
   }, []);
 
   const addToCart = async (product) => {
-    setLoading(true); 
+    const index = products.findIndex((p) => p.id === product.id);
+    if (index === -1) return; // Product not found
+  
+    setProducts(prevProducts => {
+      const updatedProducts = [...prevProducts];
+      updatedProducts[index].loading = true;
+      return updatedProducts;
+    });
+  
     const querySnapshot = await getDocs(
       query(collection(db, "shoppingBasket"), where("productId", "==", product.id), where("userId", "==", user.uid))
     );
   
     if (!querySnapshot.empty) {
-      setLoading(false); 
+      setProducts(prevProducts => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index].loading = false;
+        return updatedProducts;
+      });
       alert("Product is already in the basket!");
       return;
     }
@@ -40,10 +49,18 @@ export default function Home() {
     };
     try {
       await addDoc(collection(db, "shoppingBasket"), cartItem);
-      setLoading(false); 
+      setProducts(prevProducts => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index].loading = false;
+        return updatedProducts;
+      });
       alert("Product added to cart!");
     } catch (error) {
-      setLoading(false);
+      setProducts(prevProducts => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index].loading = false;
+        return updatedProducts;
+      });
       console.error("Error adding product to cart: ", error);
       alert("Failed to add product to cart. Please try again.");
     }
@@ -70,8 +87,8 @@ export default function Home() {
             <p className="text-gray-600 mb-4">Price: €{product.price}</p>
             <p className="text-gray-600 mb-4">{product.quantity > 0 ? `Quantity: ${product.quantity}` : <span className='text-red-500 font-bold'>Out Of Stock</span>}</p>
             {product.quantity > 0 && (
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300" onClick={() => addToCart(product)} disabled={loading}>
-                {loading ? "Adding..." : "Buy Now"}
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300" onClick={() => addToCart(product)} disabled={product.loading}>
+                {product.loading ? "Adding..." : "Buy Now"}
               </button>
             )}
           </div>

@@ -1,15 +1,11 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../auth/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
 
 const page = () => {
 
   const { user, googleSignIn, signIn, logOut } = UserAuth();
   const [loading, setLoading] = useState(true);
-  /* const [firstName, setFirstName] = useState("");
-  const [username, setUsername] = useState(""); */
 
   const handleSignIn = async () => {
     try {
@@ -48,31 +44,6 @@ const page = () => {
     };
     checkAuthentication();
   }, [user]);
-
-  /* useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        try {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            setFirstName(userData.firstName);
-            setUsername(userData.username);
-          } else {
-            console.log("User document not found in Firestore");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      }
-    };
-
-    fetchUserData(); // Call fetchUserData when user changes
-  }, [user]); */
-
-
-  console.log(user)
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

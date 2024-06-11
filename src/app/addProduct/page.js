@@ -25,13 +25,11 @@ const AddProduct = () => {
     }
 
     try {
-      // Upload image to Firebase Storage
       const storageRef = ref(storage, `products/${image.name}`);
       const snapshot = await uploadBytes(storageRef, image);
       const downloadURL = await getDownloadURL(snapshot.ref);
       console.log('Download url is:',downloadURL);
 
-      // Save product data in Firestore
       await addDoc(collection(db, "products"), {
         name,
         description,
@@ -41,7 +39,7 @@ const AddProduct = () => {
         createdAt: new Date(),
       });
 
-      // Clear form
+  
       setName('');
       setDescription('');
       setPrice('');
