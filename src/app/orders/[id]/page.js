@@ -17,7 +17,6 @@ const OrderDetailPage = () => {
       const fetchOrder = async () => {
         const orderDoc = doc(db, 'orders', id);
         const orderSnapshot = await getDoc(orderDoc);
-        console.log('Snapshot Order:',orderSnapshot);
         if (orderSnapshot.exists()) {
           setOrder({ id: orderSnapshot.id, ...orderSnapshot.data() });
         }
