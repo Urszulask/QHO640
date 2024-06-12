@@ -10,6 +10,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [quantity,setQuantity]=useState('');
+  const [category,setCategory]=useState('');
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -33,6 +34,7 @@ const AddProduct = () => {
       await addDoc(collection(db, "products"), {
         name,
         description,
+        category,
         price: parseFloat(price),
         imageUrl: downloadURL,
         quantity:quantity,
@@ -66,6 +68,12 @@ const AddProduct = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           style={{ padding: '10px', fontSize: '16px', minHeight: '100px', border: '1px solid black' }} />
+           <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          style={{ padding: '10px', fontSize: '16px', border: '1px solid black' }} />
         <input
           type="number"
           placeholder="Price"

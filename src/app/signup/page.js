@@ -42,14 +42,13 @@ const page = () => {
         const isAdmin=e.target.checkbox.checked;
     
         try {
-            // Create a new user with email and password
             const userCredential = await createUser(email, password);
             const user = userCredential.user;
             const usersCollectionRef = collection(db, "users");
             await addDoc(usersCollectionRef, {
                 userId: user.uid,
                 firstName: firstName,
-                username: username, // Storing username in Firestore
+                username: username,
                 email: email,
                 createdAt: new Date(),
                 isAdmin:isAdmin
@@ -96,7 +95,7 @@ const page = () => {
                                 <input
                                     type="text"
                                     id="username"
-                                    name="username" // Added name attribute
+                                    name="username" 
                                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline"
                                     required="required"
                                 />
@@ -108,7 +107,7 @@ const page = () => {
                                 <input
                                     type="text"
                                     id="firstName"
-                                    name="firstName" // Added name attribute
+                                    name="firstName" 
                                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline"
                                     required="required"
                                 />

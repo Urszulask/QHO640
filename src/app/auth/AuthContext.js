@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [balance, setBalance] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const googleSignIn = () => {
         const provider = new GoogleAuthProvider();
@@ -36,18 +37,38 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const fetchUserRole = async (userId) => {
+        const usersQuery = query(collection(db, "users"), where("userId", "==", userId));
+        const usersSnapshot = await getDocs(usersQuery);
+        if (!usersSnapshot.empty) {
+            const userDoc = usersSnapshot.docs[0];
+            const userData = userDoc.data();
+            console.log('User data from context:', userData);
+            console.log('User is Adin context:',userData.isAdmin);
+            setIsAdmin(userData.isAdmin);
+        } else {
+            console.log("No such user document!");
+            setIsAdmin(false);
+        }
+    };
+    
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
                 await refreshBalance(currentUser.uid);
+                await fetchUserRole(currentUser.uid);
+            } else {
+                setBalance(0);
+                setIsAdmin(false);
             }
         });
         return () => unsubscribe();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, balance, googleSignIn, createUser, signIn, logOut, refreshBalance }}>
+        <AuthContext.Provider value={{ user, balance, isAdmin, googleSignIn, createUser, signIn, logOut, refreshBalance }}>
             {children}
         </AuthContext.Provider>
     );

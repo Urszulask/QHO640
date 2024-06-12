@@ -83,8 +83,8 @@ export default function Home() {
             </div>
             <h2 className="text-xl font-bold mb-2">{product.name}</h2>
             <p className="text-gray-600 mb-4">Description: {product.description}</p>
-            <p className="text-gray-600 mb-4">ID: {product.id}</p>
             <p className="text-gray-600 mb-4">Price: €{product.price}</p>
+            <p className="text-gray-600 mb-4">Category: {product.category}</p>
             <p className="text-gray-600 mb-4">{product.quantity > 0 ? `Quantity: ${product.quantity}` : <span className='text-red-500 font-bold'>Out Of Stock</span>}</p>
             {product.quantity > 0 && (
               <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300" onClick={() => addToCart(product)} disabled={product.loading}>
