@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { searchProducts } from "../utils/searchProducts";
 import Image from "next/image";
+import ProductCard from "../components/ProductCard";
 const Search= () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState("name");
@@ -43,19 +44,7 @@ const Search= () => {
             <div>
                 <h2 className="text-lg mb-2">Results</h2>
                 <ul>
-                    {results.map(product => (
-                        <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
-                        <h2 className="text-lg font-semibold mb-4">Product Details</h2>
-                        <p className="mb-2"><span className="font-semibold">Name:</span> {product.name}</p>
-                        <p className="mb-2"><span className="font-semibold">Description:</span> {product.description}</p>
-                        <div className="mb-2">
-                          <span className="font-semibold">Image:</span>
-                          <Image src={product.imageUrl} alt="product" width={400} height={400} className="rounded-md"/>
-                        </div>
-                        <p className="mb-2"><span className="font-semibold">Quantity:</span> {product.quantity}</p>
-                        <p className="mb-2"><span className="font-semibold">Price:</span> {product.price}</p>
-                      </div>
-                    ))}
+                   <ProductCard products={results}/>
                 </ul>
             </div>
         </div>

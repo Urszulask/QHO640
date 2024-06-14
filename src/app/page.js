@@ -6,7 +6,7 @@ import { UserAuth } from "./auth/AuthContext";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const { user } = UserAuth();
+  const { user, isAdmin } = UserAuth();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -22,7 +22,7 @@ export default function Home() {
 
   const addToCart = async (product) => {
     const index = products.findIndex((p) => p.id === product.id);
-    if (index === -1) return; // Product not found
+    if (index === -1) return; 
   
     setProducts(prevProducts => {
       const updatedProducts = [...prevProducts];
@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <main className="p-4">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-center">Welcome to MyStore</h1>
+        <h1 className="text-3xl font-bold text-center">Welcome To My Clothing Shop!</h1>
         <p className="text-gray-600 text-center">Find everything you need in one place</p>
       </header>
 
@@ -77,19 +77,25 @@ export default function Home() {
         {products.map((product, index) => (
           <div key={index} className="bg-white shadow-md rounded-lg p-6 hover:scale-105 transition-transform duration-300">
             <div className="mb-4 relative">
-              <div>
-                <img src={product.imageUrl} alt={product.name} className="w-full hover:scale-110 transition-transform duration-300" />
-              </div>
+              <img src={product.imageUrl} alt={product.name} className="w-full hover:scale-110 transition-transform duration-300" />
             </div>
             <h2 className="text-xl font-bold mb-2">{product.name}</h2>
             <p className="text-gray-600 mb-4">Description: {product.description}</p>
             <p className="text-gray-600 mb-4">Price: €{product.price}</p>
             <p className="text-gray-600 mb-4">Category: {product.category}</p>
-            <p className="text-gray-600 mb-4">{product.quantity > 0 ? `Quantity: ${product.quantity}` : <span className='text-red-500 font-bold'>Out Of Stock</span>}</p>
-            {product.quantity > 0 && (
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300" onClick={() => addToCart(product)} disabled={product.loading}>
-                {product.loading ? "Adding..." : "Buy Now"}
-              </button>
+            <p className="text-gray-600 mb-4">
+              {product.quantity > 0 ? `Quantity: ${product.quantity}` : <span className='text-red-500 font-bold'>Out Of Stock</span>}
+            </p>
+            {!isAdmin && product.quantity > 0 && (
+              <div>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                  onClick={() => addToCart(product)}
+                  disabled={product.loading}
+                >
+                  {product.loading ? "Adding..." : "Buy Now"}
+                </button>
+              </div>
             )}
           </div>
         ))}

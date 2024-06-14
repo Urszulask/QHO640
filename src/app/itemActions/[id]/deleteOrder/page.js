@@ -5,6 +5,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import Image from 'next/image';
 import getProductsById from '@/app/utils/getProducts';
 import { db } from "../../../firebaseConfig";
+import ProductCard from '@/app/components/ProductCard';
 
 const DeleteItem = () => {
   const { id } = useParams();
@@ -26,7 +27,7 @@ const DeleteItem = () => {
   useEffect(() => {
     if (id) {
       const data = getProductsById(id);
-      data.then((value) => setProduct(value));
+      data.then((value) => setProduct([value]));
     }
   }, [id]);
 
@@ -37,17 +38,7 @@ const DeleteItem = () => {
   return (
     <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Delete Product: {id}</h1>
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
-        <h2 className="text-lg font-semibold mb-4">Product Details</h2>
-        <p className="mb-2"><span className="font-semibold">Name:</span> {product.name}</p>
-        <p className="mb-2"><span className="font-semibold">Description:</span> {product.description}</p>
-        <div className="mb-2">
-          <span className="font-semibold">Image:</span>
-          <Image src={product.imageUrl} alt="product" width={400} height={400} className="rounded-md"/>
-        </div>
-        <p className="mb-2"><span className="font-semibold">Quantity:</span> {product.quantity}</p>
-        <p className="mb-2"><span className="font-semibold">Price:</span> {product.price}</p>
-      </div>
+        <ProductCard products={product}></ProductCard>
       <button
         onClick={handleDelete}
         className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
