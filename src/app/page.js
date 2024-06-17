@@ -21,19 +21,24 @@ export default function Home() {
   }, []);
 
   const addToCart = async (product) => {
+    if (!user) {
+      alert("You must be logged in to add products to the cart!");
+      return;
+    }
+
     const index = products.findIndex((p) => p.id === product.id);
     if (index === -1) return; 
-  
+
     setProducts(prevProducts => {
       const updatedProducts = [...prevProducts];
       updatedProducts[index].loading = true;
       return updatedProducts;
     });
-  
+
     const querySnapshot = await getDocs(
       query(collection(db, "shoppingBasket"), where("productId", "==", product.id), where("userId", "==", user.uid))
     );
-  
+
     if (!querySnapshot.empty) {
       setProducts(prevProducts => {
         const updatedProducts = [...prevProducts];
@@ -66,6 +71,14 @@ export default function Home() {
     }
   };
 
+  const handleAddToCartClick = (product) => {
+    if (!user) {
+      alert("You must be logged in to add products to the cart!");
+    } else {
+      addToCart(product);
+    }
+  };
+
   return (
     <main className="p-4">
       <header className="mb-8">
@@ -90,7 +103,7 @@ export default function Home() {
               <div>
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                  onClick={() => addToCart(product)}
+                  onClick={() => handleAddToCartClick(product)}
                   disabled={product.loading}
                 >
                   {product.loading ? "Adding..." : "Buy Now"}
