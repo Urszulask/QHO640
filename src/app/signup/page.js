@@ -51,7 +51,8 @@ const page = () => {
                 username: username,
                 email: email,
                 createdAt: new Date(),
-                isAdmin:isAdmin
+                isAdmin:isAdmin,
+                balance:100
             });
     
             console.log("User signed up successfully");

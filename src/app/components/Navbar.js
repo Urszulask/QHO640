@@ -69,7 +69,7 @@ const Navbar = () => {
                     {
                         !isAdmin &&(
                         <li className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md">
-                            <p>Balance: ${balance}</p>
+                            <p>Balance: £{balance}</p>
                         </li>
                         )
                     }

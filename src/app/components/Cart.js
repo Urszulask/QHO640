@@ -18,7 +18,7 @@ export default function Cart({ cart, quantities, updateQuantity }) {
             <div key={item.id} className="flex justify-between items-center mb-2">
               <div>
                 <h3 className="text-lg">{key + 1}.{item.product.name}</h3>
-                <p className="text-gray-600">Price: ${item.product.price}</p>
+                <p className="text-gray-600">Price: £{item.product.price}</p>
                 <p className="text-gray-600">Quantity: {quantities[item.product.id]}</p>
               </div>
               <div className="flex">
@@ -39,7 +39,7 @@ export default function Cart({ cart, quantities, updateQuantity }) {
           ))}
           <div className="flex justify-between items-center mt-4">
             <h3 className="text-lg">Total Quantity: {totalQuantity}</h3>
-            <h3 className="text-lg">Total Price: ${totalPrice.toFixed(2)}</h3>
+            <h3 className="text-lg">Total Price: £{totalPrice.toFixed(2)}</h3>
           </div>
         </> 
       )}

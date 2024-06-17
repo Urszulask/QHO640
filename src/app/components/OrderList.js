@@ -15,7 +15,7 @@ const OrderList = ({ orders }) => {
         {orders.map(order => (
           <div key={order.id} className="border rounded-lg p-4 shadow-md">
             <p className="text-lg font-semibold mb-2">Order ID: {order.id}</p>
-            <p className="text-gray-700">Total Price: ${order.totalPrice.toFixed(2)}</p>
+            <p className="text-gray-700">Total Price: £{order.totalPrice.toFixed(2)}</p>
             <p className="text-gray-700">Total Quantity: {order.totalQuantity}</p>
             <button
               className="block mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"

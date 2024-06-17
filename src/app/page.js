@@ -81,7 +81,7 @@ export default function Home() {
             </div>
             <h2 className="text-xl font-bold mb-2">{product.name}</h2>
             <p className="text-gray-600 mb-4">Description: {product.description}</p>
-            <p className="text-gray-600 mb-4">Price: €{product.price}</p>
+            <p className="text-gray-600 mb-4">Price: £{product.price}</p>
             <p className="text-gray-600 mb-4">Category: {product.category}</p>
             <p className="text-gray-600 mb-4">
               {product.quantity > 0 ? `Quantity: ${product.quantity}` : <span className='text-red-500 font-bold'>Out Of Stock</span>}

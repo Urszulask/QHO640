@@ -56,6 +56,7 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
+            console.log("Current user is:",currentUser);
             if (currentUser) {
                 await refreshBalance(currentUser.uid);
                 await fetchUserRole(currentUser.uid);
