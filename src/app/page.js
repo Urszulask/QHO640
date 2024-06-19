@@ -82,8 +82,8 @@ export default function Home() {
   return (
     <main className="p-4">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-center">Welcome To My Clothing Shop!</h1>
-        <p className="text-gray-600 text-center">Find everything you need in one place</p>
+        <h1 className="text-4xl font-bold text-center text-blue-500">Welcome To My Clothing Shop!</h1>
+        <p className="text-2xl text-center text-blue-500">Find everything you need in one place</p>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">

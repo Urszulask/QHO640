@@ -11,7 +11,7 @@ const page = () => {
     try {
       await googleSignIn();
     } catch (error) {
-      console.log(error)
+      alert(error);
     }
   };
 
@@ -23,9 +23,9 @@ const page = () => {
   
     try {
       await signIn(email, password);
-      console.log("User logged in successfully");
+      alert("User logged in successfully");
     } catch (error) {
-      console.error("Error logging in:", error);
+      alert(error);
     }
   };
 
@@ -33,7 +33,7 @@ const page = () => {
     try {
       await logOut()
     } catch (error) {
-      console.log(error)
+      alert(error)
     }
   };
 

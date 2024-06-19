@@ -20,7 +20,7 @@ const page = () => {
         try {
             await googleSignIn();
         } catch (error) {
-            console.log(error)
+            alert(error)
         }
     };
 
@@ -28,7 +28,7 @@ const page = () => {
         try {
             await logOut()
         } catch (error) {
-            console.log(error)
+          alert(error)
         }
     };
 
@@ -55,9 +55,9 @@ const page = () => {
                 balance:100
             });
     
-            console.log("User signed up successfully");
+            alert("User signed up successfully");
         } catch (error) {
-            console.error("Error signing up:", error);
+           alert(error);
         }
     };
 

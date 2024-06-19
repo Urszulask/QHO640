@@ -79,7 +79,7 @@ const Navbar = () => {
                             )}
                             <p
                                 onClick={handleSignOut}
-                                className="px-1 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300 cursor-pointer block mx-auto text-center"
+                                className="px-1 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-400 transition-colors duration-300 cursor-pointer block mx-auto text-center"
                             >
                                 Sign Out
                             </p>

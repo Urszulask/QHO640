@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from "react";
 import { searchProducts } from "../utils/searchProducts";
-import Image from "next/image";
 import ProductCard from "../components/ProductCard";
-const Search= () => {
+
+const Search = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState("name");
     const [results, setResults] = useState([]);
@@ -11,7 +11,6 @@ const Search= () => {
     const handleSearch = async (e) => {
         e.preventDefault();
         const products = await searchProducts(searchTerm, filterType);
-        console.log('I am called;')
         setResults(products);
     };
 
@@ -43,9 +42,11 @@ const Search= () => {
             </form>
             <div>
                 <h2 className="text-lg mb-2">Results</h2>
-                <ul>
-                   <ProductCard products={results}/>
-                </ul>
+                {results.length > 0 ? (
+                    <ProductCard products={results}/>
+                ) : (
+                    <p>No products found.</p>
+                )}
             </div>
         </div>
     );
